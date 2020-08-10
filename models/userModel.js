@@ -13,7 +13,6 @@ User.getAllUser = function (result) {
       result(null, err);
     } else {
       console.log("tasks : ", res);
-
       result(null, res);
     }
   });

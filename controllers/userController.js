@@ -1,5 +1,6 @@
 var bcrypt = require("bcrypt");
 var validator = require("email-validator");
+var sql = require("../db");
 
 var User = require('../models/userModel')
 
