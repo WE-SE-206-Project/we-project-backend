@@ -6,7 +6,7 @@ var Appt = function (appt) {
   this.created_at = new Date();
 };
 
-Appt.getAllappt = function (result) {
+Appt.getAllAppt = function (result) {
   sql.query("Select * from appointment", function (err, res) {
     if (err) {
       console.log("error: ", err);
