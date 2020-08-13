@@ -14,15 +14,16 @@ exports.list_all_appt = function (req, res) {
 };
 
 exports.create_appt = function (req, res) {
-  var saltRounds = 10;
+  //var saltRounds = 10;
   var firstName = req.body.firstName;
   var lastName = req.body.lastName;
   var email = req.body.email;
   var address = req.body.address;
   var phone = req.body.phone;
-  var password = req.body.password;
+  var reason = req.body.reason;
+  //var password = req.body.password;
   var schedule_at = req.body.schedule_at;
-  var hashedPassword = bcrypt.hashSync(password, saltRounds);
+  //var hashedPassword = bcrypt.hashSync(password, saltRounds);
 
   var newAppt = {
     firstName: firstName,
@@ -30,7 +31,7 @@ exports.create_appt = function (req, res) {
     email: email,
     address:address,
     phone: phone,
-    password: hashedPassword,
+    reason: reason,
     schedule_at:schedule_at
   };
 
