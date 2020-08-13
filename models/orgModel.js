@@ -7,7 +7,7 @@ var Org = function (org) {
 };
 
 Org.getAllOrg = function (result) {
-  sql.query("Select * from org", function (err, res) {
+  sql.query("Select * from organization", function (err, res) {
     if (err) {
       console.log("error: ", err);
       result(null, err);
@@ -19,7 +19,7 @@ Org.getAllOrg = function (result) {
 };
 
 Org.createOrg = function (newOrg, result) {
-  sql.query("INSERT INTO org set ?", newOrg, function (err, res) {
+  sql.query("INSERT INTO organization set ?", newOrg, function (err, res) {
     if (err) {
       console.log("error: ", err);
       result(err, null);

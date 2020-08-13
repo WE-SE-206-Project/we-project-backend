@@ -43,7 +43,7 @@ exports.login = function (req, res) {
 
   //   const user = { name: name };
 
-  sql.query("SELECT * FROM email WHERE email = ?", [email], function (
+  sql.query("SELECT * FROM organization WHERE email = ?", [email], function (
     error,
     results,
     fields

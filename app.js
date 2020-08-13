@@ -8,6 +8,7 @@ var bodyParser = require("body-parser");
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var orgRouter = require("./routes/org");
 var apiRouter = require('./routes/api')
   
 
@@ -32,6 +33,7 @@ app.use(bodyParser.json());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/org', orgRouter);
 app.use('/api',apiRouter)
 
 // catch 404 and forward to error handler
