@@ -7,7 +7,7 @@ var Appt = function (appt) {
 };
 
 Appt.getAllappt = function (result) {
-  sql.query("Select * from appt", function (err, res) {
+  sql.query("Select * from appointment", function (err, res) {
     if (err) {
       console.log("error: ", err);
       result(null, err);
@@ -19,7 +19,7 @@ Appt.getAllappt = function (result) {
 };
 
 Appt.createAppt = function (newAppt, result) {
-  sql.query("INSERT INTO appt set ?", newAppt, function (err, res) {
+  sql.query("INSERT INTO appointment set ?", newAppt, function (err, res) {
     if (err) {
       console.log("error: ", err);
       result(err, null);
