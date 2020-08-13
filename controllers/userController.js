@@ -15,15 +15,19 @@ exports.list_all_users = function (req, res) {
 
 exports.create_user = function (req, res) {
   var saltRounds = 10;
-  var username = req.body.username;
+  var firstName = req.body.firstName;
+  var lastName = req.body.lastName;
   var email = req.body.email;
   var password = req.body.password;
+  var phone = req.body.phone;
   var hashedPassword = bcrypt.hashSync(password, saltRounds);
 
   var newUser = {
-    username: username,
+    firstName: firstName,
+    lastName: lastName,
     email: email,
     password: hashedPassword,
+    phone: phone
   };
 
   User.createUser(newUser, function (err, user) {
@@ -35,13 +39,13 @@ exports.create_user = function (req, res) {
 };
 
 exports.login = function (req, res) {
-  var username = req.body.username;
+  //var username = req.body.username;
   var email = req.body.email;
   var password = req.body.password;
 
-  const user = { name: username };
+  //const user = { name: username };
 
-  sql.query("SELECT * FROM user WHERE username = ?", [username], function (
+  sql.query("SELECT * FROM user WHERE email = ?", [email], function (
     error,
     results,
     fields
