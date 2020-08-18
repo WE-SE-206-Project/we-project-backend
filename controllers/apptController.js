@@ -1,6 +1,7 @@
 var bcrypt = require("bcrypt");
 var validator = require("email-validator");
 var sql = require("../db");
+const nodemailer = require("nodemailer");
 
 var Appt = require("../models/apptModel");
 
@@ -17,7 +18,7 @@ exports.create_appt = function (req, res) {
   //var saltRounds = 10;
   var firstName = req.body.firstName;
   var lastName = req.body.lastName;
-  var email = req.body.email;
+  let email = req.body.email;
   var address = req.body.address;
   var phone = req.body.phone;
   var reason = req.body.reason;
@@ -25,14 +26,59 @@ exports.create_appt = function (req, res) {
   var schedule_at = req.body.schedule_at;
   //var hashedPassword = bcrypt.hashSync(password, saltRounds);
 
+  async function sendEmail() {
+    let transporter = nodemailer.createTransport({
+      service: "gmail",
+      // port: 587,
+      // secure: false, // true for 465, false for other ports
+      auth: {
+        user: "hamzashahab1610@gmail.com", // generated ethereal user
+        pass: "Squirtle2000", // generated ethereal password
+      },
+    });
+
+    // verify connection configuration
+    transporter.verify(function (error, success) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Server is ready to take our messages");
+      }
+    });
+
+    var mailOptions = {
+      from: "hamzashahab1610@gmail.com",
+      to: email,
+      subject: `Confirmation of Appointment`,
+      text: `Dear Mr. ${firstName} ${lastName},
+
+I would like to confirm your appointment scheduled on ${schedule_at} at 2 pm. For further questions and queries contact us at:
+
+03xx-xxxxxxx
+
+Regards,
+
+Hamza Shahab,`,
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent: " + info.response);
+      }
+    });
+  }
+  sendEmail().catch(console.error);
+
   var newAppt = {
     firstName: firstName,
-    lastName:lastName,
+    lastName: lastName,
     email: email,
-    address:address,
+    address: address,
     phone: phone,
     reason: reason,
-    schedule_at:schedule_at
+    schedule_at: schedule_at,
   };
 
   Appt.createAppt(newAppt, function (err, appt) {
