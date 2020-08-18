@@ -1,0 +1,51 @@
+//Authenticate Token
+GET http://localhost:9000/users/auth
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiaGFtemEiLCJpYXQiOjE1ODcxODgwODIsImV4cCI6MTU4NzE4ODE0Mn0.sIk0n6WNKEyxy3N3otDCHvs2MXm4o1fRvYZBVddZj6o
+
+//Gets all users
+GET http://localhost:9000/users/
+
+###
+//Creates new user
+POST http://localhost:9000/users/register
+Content-Type: application/json
+
+{
+  "firstName":"admin",
+  "lastName":"admin",
+  "email":"admin@gmail.com",
+  "password":"admin",
+  "phone":"02321432"
+}
+
+###
+//User Login
+POST http://localhost:9000/users/login
+Content-Type: application/json
+
+{
+  "email":"hamza@gmail.com",
+  "password":"123"
+}
+
+###
+//Creates new organization
+POST http://localhost:9000/org/register
+Content-Type: application/json
+
+{
+  "name":"org",
+  "email":"admin@gmail.com",
+  "password":"admin",
+  "phone":"02321432"
+}
+
+###
+//Organization Login
+POST http://localhost:9000/org/login
+Content-Type: application/json
+
+{
+  "email":"hamza@gmail.com",
+  "password":"123"
+}
