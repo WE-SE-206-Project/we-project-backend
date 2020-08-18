@@ -1,8 +1,28 @@
+require("dotenv").config();
 var bcrypt = require("bcrypt");
 var validator = require("email-validator");
 var sql = require("../db");
+var jwt = require("jsonwebtoken");
 
 var User = require('../models/userModel')
+
+function generateAccessToken(user) {
+  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: "1800s",
+  });
+}
+
+exports.authenticateToken = (req, res, next) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+  if (token == null) return res.sendStatus(401);
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+};
 
 exports.list_all_users = function (req, res) {
   User.getAllUser(function (err, user) {
@@ -43,7 +63,7 @@ exports.login = function (req, res) {
   var email = req.body.email;
   var password = req.body.password;
 
-  //const user = { name: username };
+  const user = { email: email };
 
   sql.query("SELECT * FROM user WHERE email = ?", [email], function (
     error,
@@ -60,12 +80,14 @@ exports.login = function (req, res) {
       if (results.length > 0) {
         if (
           bcrypt.compareSync(password, results[0].password) &&
-          results[0].username.length >= 0
+          results[0].email.length >= 0
         ) {
+          const accessToken = generateAccessToken(user);
           console.log("The solution is: ", results);
           res.status(200).send({
             code: 200,
             success: "login sucessfull",
+            accessToken: accessToken,
           });
           //next();
         } else {

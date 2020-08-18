@@ -32,8 +32,8 @@ exports.create_appt = function (req, res) {
       // port: 587,
       // secure: false, // true for 465, false for other ports
       auth: {
-        user: "email", // generated ethereal user
-        pass: "pass", // generated ethereal password
+        user: "hamzashahab1610@gmail.com", // generated ethereal user
+        pass: "wnvzosddxkknwraw", // generated ethereal password
       },
     });
 
