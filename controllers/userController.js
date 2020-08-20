@@ -146,11 +146,11 @@ exports.login = function (req, res) {
 
   //   const user = { name: name };
 
-  sql.query("SELECT * FROM organization WHERE email = ?", [email], function (
+  sql.query("SELECT * FROM user WHERE email = ?", [email], function (
     error,
     results,
     fields
-  ) {
+  ) {console.log(results);
     if (error) {
       console.log("error ocurred", error);
       res.status(400).send({
@@ -161,7 +161,7 @@ exports.login = function (req, res) {
       if (results.length > 0) {
         if (
           bcrypt.compareSync(password, results[0].password) &&
-          results[0].name.length >= 0
+          results[0].email.length >= 0
         ) {
           console.log("The solution is: ", results);
           res.status(200).send({
