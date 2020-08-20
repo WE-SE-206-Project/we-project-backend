@@ -153,7 +153,7 @@ exports.login = function (req, res) {
   ) {
     if (error) {
       console.log("error ocurred", error);
-      res.send({
+      res.status(400).json({
         code: 400,
         failed: "error ocurred",
       });
@@ -165,7 +165,7 @@ exports.login = function (req, res) {
         ) {
           const accessToken = generateAccessToken(user);
           console.log("The solution is: ", results);
-          res.send({
+          res.status(204).json({
             code: 200,
             success: "login sucessfull",
             result: results,
@@ -173,13 +173,13 @@ exports.login = function (req, res) {
           });
           //next();
         } else {
-          res.send({
+          res.status(204).json({
             code: 204,
             success: "Email and password does not match",
           });
         }
       } else {
-        res.send({
+        res.status(204).json({
           code: 204,
           success: "Email does not exist",
         });
