@@ -8,7 +8,7 @@ var user = require('../controllers/userController')
 router.get("/", user.list_all_users);
 router.post("/register", user.create_user);
 router.post("/update", user.update_user);
-router.post("/login", user.login,user.authenticateToken);
+router.post("/login", user.login);
 router.get("/auth", user.authenticateToken, user.index)
 router.get("/contactus")
 

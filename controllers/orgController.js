@@ -30,9 +30,13 @@ exports.create_org = function (req, res) {
 
   Org.createOrg(newOrg, function (err, org) {
     console.log("Organization created");
-    if (err) res.send(err);
-    console.log("res", org);
-    res.send(org);
+    if (err) {
+      res.json({status: false})
+      //res.send(err);
+    }
+    console.log("res", user);
+     res.json({ status: true });
+    //res.send(user);
   });
 };
 

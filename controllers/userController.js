@@ -165,7 +165,7 @@ exports.login = function (req, res) {
         ) {
           const accessToken = generateAccessToken(user);
           console.log("The solution is: ", results);
-          res.status(204).json({
+          res.status(200).json({
             code: 200,
             success: "login sucessfull",
             result: results,
