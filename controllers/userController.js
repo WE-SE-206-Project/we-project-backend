@@ -156,6 +156,7 @@ exports.login = function (req, res) {
       res.status(400).send({
         code: 400,
         failed: "error ocurred",
+        results: results,
       });
     } else {
       if (results.length > 0) {
@@ -174,12 +175,14 @@ exports.login = function (req, res) {
           res.status(204).send({
             code: 204,
             success: "Email and password does not match",
+            results: results,
           });
         }
       } else {
         res.status(204).send({
           code: 204,
           success: "Email does not exist",
+          results: results,
         });
       }
     }
