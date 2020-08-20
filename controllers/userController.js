@@ -140,13 +140,13 @@ exports.create_user = function (req, res) {
 };
 
 exports.login = function (req, res) {
-  //var username = req.body.username;
+  //   var name = req.body.name;
   var email = req.body.email;
   var password = req.body.password;
 
-  //const user = { email: email };
+  //   const user = { name: name };
 
-  sql.query("SELECT * FROM user WHERE email = ?", [email], function (
+  sql.query("SELECT * FROM organization WHERE email = ?", [email], function (
     error,
     results,
     fields
@@ -156,35 +156,30 @@ exports.login = function (req, res) {
       res.status(400).send({
         code: 400,
         failed: "error ocurred",
-        results: results,
       });
     } else {
       if (results.length > 0) {
         if (
           bcrypt.compareSync(password, results[0].password) &&
-          results[0].email.length >= 0
+          results[0].name.length >= 0
         ) {
-          //const accessToken = generateAccessToken(user);
           console.log("The solution is: ", results);
           res.status(200).send({
             code: 200,
-            success: "login sucessfull",
-            result: results,
-            accessToken: accessToken,
+            success: "login successful",
+            results: results,
           });
           //next();
         } else {
           res.status(204).send({
             code: 204,
             success: "Email and password does not match",
-            results: results,
           });
         }
       } else {
         res.status(204).send({
           code: 204,
           success: "Email does not exist",
-          results: results,
         });
       }
     }
