@@ -2,9 +2,11 @@ var bcrypt = require("bcrypt");
 var validator = require("email-validator");
 var sql = require("../db");
 const nodemailer = require("nodemailer");
-
+var express = require('express');
 var Appt = require("../models/apptModel");
-
+var router = express.Router();
+var validatetime= require("./prac");
+const { json } = require("body-parser");
 exports.list_all_appt = function (req, res) {
   Appt.getAllAppt(function (err, appt) {
     console.log("Appointment fetched");
@@ -24,8 +26,14 @@ exports.create_appt = function (req, res) {
   var reason = req.body.reason;
   //var password = req.body.password;
   var schedule_at = req.body.schedule_at;
+ 
   //var hashedPassword = bcrypt.hashSync(password, saltRounds);
+  let check = validatetime.validatetime(schedule_at);
+  console.log("check",check)
+  if(check===0) return res.status(400).json("Sorry, tiem slot not available!");
 
+  
+ 
   async function sendEmail() {
     let transporter = nodemailer.createTransport({
       service: "gmail",
