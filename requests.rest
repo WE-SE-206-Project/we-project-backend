@@ -1,7 +1,8 @@
 //Authenticate Token
 GET http://localhost:9000/users/auth
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiaGFtemEiLCJpYXQiOjE1ODcxODgwODIsImV4cCI6MTU4NzE4ODE0Mn0.sIk0n6WNKEyxy3N3otDCHvs2MXm4o1fRvYZBVddZj6o
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhhbXphQGdtYWlsLmNvbSIsImlhdCI6MTU5Nzc2ODk0MiwiZXhwIjoxNTk3NzcwNzQyfQ.Nywz6JWJ3l16PfqZnM0azuVzuTcNLSo2BeQrqM-jx1A
 
+###
 //Gets all users
 GET http://localhost:9000/users/
 
@@ -25,7 +26,7 @@ Content-Type: application/json
 
 {
   "email":"hamza@gmail.com",
-  "password":"123"
+  "password":"admin123"
 }
 
 ###

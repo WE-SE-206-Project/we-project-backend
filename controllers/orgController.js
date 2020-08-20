@@ -36,6 +36,29 @@ exports.create_org = function (req, res) {
   });
 };
 
+exports.update_org = function (req, res) {
+  var saltRounds = 10;
+  var name = req.body.name;
+  var email = req.body.email;
+  var phone = req.body.phone;
+  var password = req.body.password;
+  var hashedPassword = bcrypt.hashSync(password, saltRounds);
+
+  var newOrg = {
+    name: name,
+    email: email,
+    phone: phone,
+    password: hashedPassword,
+  };
+
+  Org.updateOrg(newOrg, function (err, org) {
+    console.log("Organization updated");
+    if (err) res.send(err);
+    console.log("res", org);
+    res.send(org);
+  });
+};
+
 exports.login = function (req, res) {
   //   var name = req.body.name;
   var email = req.body.email;
@@ -64,12 +87,13 @@ exports.login = function (req, res) {
           res.status(200).send({
             code: 200,
             success: "login successful",
+            results: results
           });
           //next();
         } else {
           res.status(204).send({
             code: 204,
-            success: "Email and password does not match",
+            success: "Email and password does not match"
           });
         }
       } else {

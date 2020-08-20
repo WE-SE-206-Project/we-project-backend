@@ -31,4 +31,26 @@ Org.createOrg = function (newOrg, result) {
   });
 };
 
+Org.updateOrg = function (newOrg, result) {
+  sql.query(
+    "UPDATE organization set name = ?, password = ?, phone = ? WHERE email = ?",
+    [
+      newOrg.name,
+      newOrg.password,
+      newOrg.phone,
+      newOrg.email,
+    ],
+    function (err, res) {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+      } else {
+        console.log("tasks : ", res);
+
+        result(null, res);
+      }
+    }
+  );
+};
+
 module.exports = Org;

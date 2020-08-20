@@ -25,10 +25,32 @@ User.createUser = function (newUser, result) {
       result(err, null);
     } else {
       console.log("tasks : ", res);
-
       result(null, res);
     }
   });
+};
+
+User.updateUser = function (newUser, result) {
+  sql.query(
+    "UPDATE user set firstName = ?, lastName = ?, password = ?, phone = ? WHERE email = ?",
+    [
+      newUser.firstName,
+      newUser.lastName,
+      newUser.password,
+      newUser.phone,
+      newUser.email,
+    ],
+    function (err, res) {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+      } else {
+        console.log("tasks : ", res);
+
+        result(null, res);
+      }
+    }
+  );
 };
 
 module.exports = User;
