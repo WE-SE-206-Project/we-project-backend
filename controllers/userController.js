@@ -144,7 +144,7 @@ exports.login = function (req, res) {
   var email = req.body.email;
   var password = req.body.password;
 
-  const user = { email: email };
+  //const user = { email: email };
 
   sql.query("SELECT * FROM user WHERE email = ?", [email], function (
     error,
@@ -153,9 +153,10 @@ exports.login = function (req, res) {
   ) {
     if (error) {
       console.log("error ocurred", error);
-      res.status(400).json({
+      res.status(400).send({
         code: 400,
         failed: "error ocurred",
+        results: results,
       });
     } else {
       if (results.length > 0) {
@@ -163,9 +164,9 @@ exports.login = function (req, res) {
           bcrypt.compareSync(password, results[0].password) &&
           results[0].email.length >= 0
         ) {
-          const accessToken = generateAccessToken(user);
+          //const accessToken = generateAccessToken(user);
           console.log("The solution is: ", results);
-          res.status(200).json({
+          res.status(200).send({
             code: 200,
             success: "login sucessfull",
             result: results,
@@ -173,15 +174,17 @@ exports.login = function (req, res) {
           });
           //next();
         } else {
-          res.status(204).json({
+          res.status(204).send({
             code: 204,
             success: "Email and password does not match",
+            results: results,
           });
         }
       } else {
-        res.status(204).json({
+        res.status(204).send({
           code: 204,
           success: "Email does not exist",
+          results: results,
         });
       }
     }
