@@ -162,7 +162,7 @@ exports.update_user = function (req, res) {
     console.log("user updated");
     if (err) res.send(err);
     console.log("res", user);
-    res.send(user);
+    res.send({user:newUser,result:user});
   });
 };
 

@@ -76,7 +76,7 @@ exports.update_org = function (req, res) {
     console.log("Organization updated");
     if (err) res.send(err);
     console.log("res", org);
-    res.send(org);
+    res.send({org:newOrg,result:org});
   });
 };
 

@@ -19,19 +19,37 @@ exports.list_all_appt = function (req, res) {
 
 exports.getAppointment = function (req, res) {
   var email = req.body.email;
+  var role = req.body.role
+  var orgId = req.body.orgId
 
-  sql.query("SELECT * FROM appointment WHERE email = ?", [email], function (
-    error,
-    results,
-    fields
-  ) {
-    if (error) {
-      res.send(error);
-    } else {
-      console.log("results", results);
-      res.send(results);
-    }
-  });
+  if (role === "user") {
+    sql.query("SELECT * FROM appointment WHERE email = ?", [email], function (
+      error,
+      results,
+      fields
+    ) {
+      if (error) {
+        res.send(error);
+      } else {
+        console.log("results", results);
+        res.send(results);
+      }
+    });
+  } else if (role === "org") {
+    sql.query("SELECT * FROM appointment WHERE orgId = ?", [orgId], function (
+      error,
+      results,
+      fields
+    ) {
+      if (error) {
+        res.send(error);
+      } else {
+        console.log("results", results);
+        res.send(results);
+      }
+    });
+  }
+  
 };
 
 exports.create_appt = async function (req, res) {
@@ -42,7 +60,7 @@ exports.create_appt = async function (req, res) {
   var address = req.body.address;
   var phone = req.body.phone;
   var reason = req.body.reason;
-  //var password = req.body.password;
+  var orgId = req.body.orgId;
   var schedule_at = req.body.schedule_at;
   console.log("schedule at", schedule_at);
   let check;
@@ -134,6 +152,7 @@ Hamza Shahab,`,
           firstName: firstName,
           lastName: lastName,
           email: email,
+          orgId: orgId,
           address: address,
           phone: phone,
           reason: reason,
