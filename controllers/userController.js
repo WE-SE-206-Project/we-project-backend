@@ -130,11 +130,11 @@ exports.create_user = function (req, res) {
   User.createUser(newUser, function (err, user) {
     console.log("user created");
     if (err) {
-      res.json({status: false})
+      res.status(400).send({ status: false });
       //res.send(err);
     }
     console.log("res", user);
-     res.json({ status: true });
+    res.status(200).send({ status: true });
     //res.send(user);
   });
 };
@@ -150,7 +150,8 @@ exports.login = function (req, res) {
     error,
     results,
     fields
-  ) {console.log(results);
+  ) {
+    console.log(results);
     if (error) {
       console.log("error ocurred", error);
       res.status(400).send({
@@ -164,11 +165,13 @@ exports.login = function (req, res) {
           bcrypt.compareSync(password, results[0].password) &&
           results[0].email.length >= 0
         ) {
+          const accessToken = generateAccessToken(user);
           console.log("The solution is: ", results);
           res.status(200).send({
             code: 200,
             success: "login successful",
             results: results,
+            accessToken: accessToken,
           });
           //next();
         } else {
