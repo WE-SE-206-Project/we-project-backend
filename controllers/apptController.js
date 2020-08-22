@@ -2,10 +2,10 @@ var bcrypt = require("bcrypt");
 var validator = require("email-validator");
 var sql = require("../db");
 const nodemailer = require("nodemailer");
-var express = require('express');
+var express = require("express");
 var Appt = require("../models/apptModel");
 var router = express.Router();
-var validatetime= require("./prac");
+var validatetime = require("./prac");
 const { json } = require("body-parser");
 exports.list_all_appt = function (req, res) {
   Appt.getAllAppt(function (err, appt) {
@@ -26,15 +26,14 @@ exports.create_appt = function (req, res) {
   var reason = req.body.reason;
   //var password = req.body.password;
   var schedule_at = req.body.schedule_at;
- 
+
   //var hashedPassword = bcrypt.hashSync(password, saltRounds);
   let check = validatetime.validatetime(schedule_at);
-  console.log("check",check)
-  if(check===0) return res.status(400).json("Sorry, tiem slot not available!");
+  console.log("check", check);
+  if (check === 0)
+    return res.status(400).json("Sorry, tiem slot not available!");
 
-  
- 
-  async function sendEmail() {
+  async function sendEmail(email) {
     let transporter = nodemailer.createTransport({
       service: "gmail",
       // port: 587,
@@ -54,30 +53,47 @@ exports.create_appt = function (req, res) {
       }
     });
 
-    var mailOptions = {
+    var sender = {
       from: "hamzashahab1610@gmail.com",
-      to: email,
-      subject: `Confirmation of Appointment`,
+      to: "hamzashahab1610@gmail.com",
+      subject: `Reply contact us`,
       text: `Dear Mr. ${firstName} ${lastName},
 
-I would like to confirm your appointment scheduled on ${schedule_at} at 2 pm. For further questions and queries contact us at:
-
-03xx-xxxxxxx
+Thank you for contacting us.
 
 Regards,
 
 Hamza Shahab,`,
     };
 
-    transporter.sendMail(mailOptions, function (error, info) {
+    var recepient = {
+      from: "hamzashahab1610@gmail.com",
+      to: email,
+      subject: `Reply contact us`,
+      text: `Dear Mr. ${firstName} ${lastName},
+
+Thank you for contacting us.
+
+Regards,
+
+Hamza Shahab,`,
+    };
+
+    transporter.sendMail(sender, function (error, info) {
       if (error) {
         console.log(error);
       } else {
-        console.log("Email sent: " + info.response);
+        console.log("Email sent to sender: " + info.response);
+      }
+    });
+    transporter.sendMail(recepient, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent to recepient: " + info.response);
       }
     });
   }
-  sendEmail().catch(console.error);
 
   var newAppt = {
     firstName: firstName,
@@ -93,7 +109,8 @@ Hamza Shahab,`,
     console.log("Appointment created");
     if (err) res.send(err);
     console.log("res", appt);
-    res.send(appt);
+    sendEmail(email).catch(console.error);
+    res.send({ appt: appt, status: "Email sent" });
   });
 };
 

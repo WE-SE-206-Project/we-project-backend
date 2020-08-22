@@ -10,10 +10,7 @@ var User = require("../models/userModel");
 function generateAccessToken(user) {
   return jwt.sign(
     user,
-    "06cba9adaf0fe4c209cbc699016d2bc8d3876e29fc621ae58087640ba3e4271148b7a80c1ed725d4fba7d7bc056f476302af43253f037f53ff0a8eccdc1ab617",
-    {
-      expiresIn: "1800s",
-    }
+    "06cba9adaf0fe4c209cbc699016d2bc8d3876e29fc621ae58087640ba3e4271148b7a80c1ed725d4fba7d7bc056f476302af43253f037f53ff0a8eccdc1ab617"
   );
 }
 
@@ -22,7 +19,7 @@ exports.authenticateToken = (req, res, next) => {
   const token = authHeader && authHeader.split(" ")[1];
   if (token == null) return res.sendStatus(401);
 
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+  jwt.verify(token, "06cba9adaf0fe4c209cbc699016d2bc8d3876e29fc621ae58087640ba3e4271148b7a80c1ed725d4fba7d7bc056f476302af43253f037f53ff0a8eccdc1ab617", (err, user) => {
     if (err) return res.sendStatus(403);
     req.user = user;
     next();
@@ -96,9 +93,8 @@ Hamza Shahab,`,
       }
     });
   }
-  sendEmail("hamzashahab1610@gmail.com").catch(console.error);
   sendEmail(email).catch(console.error);
-  res.send("Email sent")
+  res.send("Email sent");
 };
 
 exports.list_all_users = function (req, res) {
@@ -191,7 +187,6 @@ exports.login = function (req, res) {
           bcrypt.compareSync(password, results[0].password) &&
           results[0].email.length >= 0
         ) {
-          
           console.log("The solution is: ", results);
           res.status(200).send({
             code: 200,
