@@ -7,12 +7,30 @@ var Appt = require("../models/apptModel");
 var router = express.Router();
 var validatetime = require("./prac");
 const { json } = require("body-parser");
+
 exports.list_all_appt = function (req, res) {
   Appt.getAllAppt(function (err, appt) {
     console.log("Appointment fetched");
     if (err) res.send(err);
     console.log("res", appt);
     res.send(appt);
+  });
+};
+
+exports.getAppointment = function (req, res) {
+  var email = req.body.email;
+
+  sql.query("SELECT * FROM appointment WHERE email = ?", [email], function (
+    error,
+    results,
+    fields
+  ) {
+    if (error) {
+      res.send(error);
+    } else {
+      console.log("results", results);
+      res.send(results);
+    }
   });
 };
 

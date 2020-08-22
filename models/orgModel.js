@@ -33,10 +33,9 @@ Org.createOrg = function (newOrg, result) {
 
 Org.updateOrg = function (newOrg, result) {
   sql.query(
-    "UPDATE organization set name = ?, password = ?, phone = ? WHERE email = ?",
+    "UPDATE organization set name = ?, phone = ? WHERE email = ?",
     [
       newOrg.name,
-      newOrg.password,
       newOrg.phone,
       newOrg.email,
     ],

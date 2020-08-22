@@ -32,11 +32,10 @@ User.createUser = function (newUser, result) {
 
 User.updateUser = function (newUser, result) {
   sql.query(
-    "UPDATE user set firstName = ?, lastName = ?, password = ?, phone = ? WHERE email = ?",
+    "UPDATE user set firstName = ?, lastName = ?, phone = ? WHERE email = ?",
     [
       newUser.firstName,
       newUser.lastName,
-      newUser.password,
       newUser.phone,
       newUser.email,
     ],

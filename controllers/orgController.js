@@ -62,18 +62,14 @@ exports.create_org = function (req, res) {
 };
 
 exports.update_org = function (req, res) {
-  var saltRounds = 10;
   var name = req.body.name;
   var email = req.body.email;
   var phone = req.body.phone;
-  var password = req.body.password;
-  var hashedPassword = bcrypt.hashSync(password, saltRounds);
 
   var newOrg = {
     name: name,
     email: email,
     phone: phone,
-    password: hashedPassword,
   };
 
   Org.updateOrg(newOrg, function (err, org) {

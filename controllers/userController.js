@@ -26,6 +26,27 @@ exports.authenticateToken = (req, res, next) => {
   });
 };
 
+exports.changePassword = function (req, res) {
+  var email = req.body.email;
+  var password = req.body.password;
+
+  sql.query(
+    "UPDATE user set password = ? WHERE email = ?",
+    [password, email],
+    function (err, result) {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        res.send(err)
+      } else {
+        console.log("tasks : ", result);
+        result(null, result);
+        res.send(res);
+      }
+    }
+  );
+}
+
 exports.contactus = function (req, res) {
   var firstName = req.body.firstName;
   var lastName = req.body.lastName;
@@ -111,15 +132,12 @@ exports.update_user = function (req, res) {
   var firstName = req.body.firstName;
   var lastName = req.body.lastName;
   var email = req.body.email;
-  var password = req.body.password;
   var phone = req.body.phone;
-  var hashedPassword = bcrypt.hashSync(password, saltRounds);
 
   var newUser = {
     firstName: firstName,
     lastName: lastName,
     email: email,
-    password: hashedPassword,
     phone: phone,
   };
 
