@@ -175,7 +175,7 @@ exports.login = function (req, res) {
     console.log(results);
     if (error) {
       console.log("error ocurred", error);
-      res.send({
+      res.status(400).send({
         code: 400,
         failed: "error ocurred",
         results: results,
@@ -188,7 +188,7 @@ exports.login = function (req, res) {
         ) {
           const accessToken = generateAccessToken(mail);
           console.log("The solution is: ", results);
-          res.send({
+          res.status(200).send({
             code: 200,
             success: "login successful",
             results: results,
@@ -196,14 +196,14 @@ exports.login = function (req, res) {
           });
           //next();
         } else {
-          res.send({
+          res.status(204).send({
             code: 204,
             success: "Email and password does not match",
             results: results,
           });
         }
       } else {
-        res.send({
+        res.status(204).send({
           code: 204,
           success: "Email does not exist",
           results: results,
