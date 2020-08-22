@@ -49,7 +49,7 @@ exports.changePassword = function (req, res) {
     );
   } else if (role === "org") {
     sql.query(
-      "UPDATE org set password = ? WHERE email = ?",
+      "UPDATE organization set password = ? WHERE email = ?",
       [password, email],
       function (err, result) {
         if (err) {
