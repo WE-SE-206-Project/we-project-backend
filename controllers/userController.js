@@ -51,7 +51,20 @@ exports.contactus = function (req, res) {
       }
     });
 
-    var mailOptions = {
+    var sender = {
+      from: "hamzashahab1610@gmail.com",
+      to: "hamzashahab1610@gmail.com",
+      subject: `Reply contact us`,
+      text: `Dear Mr. ${firstName} ${lastName},
+
+Thank you for contacting us.
+
+Regards,
+
+Hamza Shahab,`,
+    };
+
+    var recepient = {
       from: "hamzashahab1610@gmail.com",
       to: email,
       subject: `Reply contact us`,
@@ -64,16 +77,24 @@ Regards,
 Hamza Shahab,`,
     };
 
-    transporter.sendMail(mailOptions, function (error, info) {
+    transporter.sendMail(sender, function (error, info) {
       if (error) {
         console.log(error);
       } else {
-        console.log("Email sent: " + info.response);
+        console.log("Email sent to sender: " + info.response);
+      }
+    });
+    transporter.sendMail(recepient, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent to recepient: " + info.response);
       }
     });
   }
   sendEmail("hamzashahab1610@gmail.com").catch(console.error);
   sendEmail(email).catch(console.error);
+  res.send("Email sent")
 };
 
 exports.list_all_users = function (req, res) {
