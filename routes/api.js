@@ -7,10 +7,11 @@ var user = require("../controllers/userController")
 //   res.send("respond with a resource");
 // });
 
-router.post("/getAppointment", user.authenticateToken,appt.getAppointment)
+router.post("/getAppointment", appt.getAppointment)
 router.post("/changePassword", user.authenticateToken,user.changePassword);
 router.get("/", user.authenticateToken,appt.list_all_appt);
 router.post("/create", user.authenticateToken, appt.create_appt);
+//router.get("/auth",user.authenticateToken)
 //router.post("/login", appt.login);
 
 module.exports = router;
