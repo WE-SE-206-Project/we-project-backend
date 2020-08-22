@@ -15,10 +15,12 @@ exports.validatetime = function (schedule_at) {
       //   console.log("error occured");
       //   return 0;
       // }
-      if (results.length > 0) {
+      if (results !== []) {
+        console.log('results',results);
         console.log("time slot taken");
         return 0;
-      } else if (results.length === 0) {
+      } else if (results === []) {
+        console.log("results", results);
         console.log("time slot available");
         return 1;
       }

@@ -16,7 +16,7 @@ exports.list_all_appt = function (req, res) {
   });
 };
 
-exports.create_appt = function (req, res) {
+exports.create_appt = async function (req, res) {
   //var saltRounds = 10;
   var firstName = req.body.firstName;
   var lastName = req.body.lastName;
@@ -26,12 +26,8 @@ exports.create_appt = function (req, res) {
   var reason = req.body.reason;
   //var password = req.body.password;
   var schedule_at = req.body.schedule_at;
-
-  //var hashedPassword = bcrypt.hashSync(password, saltRounds);
-  let check = validatetime.validatetime(schedule_at);
-  console.log("check", check);
-  if (check === 0)
-    return res.status(400).json("Sorry, tiem slot not available!");
+  console.log("schedule at", schedule_at);
+  let check;
 
   async function sendEmail(email) {
     let transporter = nodemailer.createTransport({
@@ -95,23 +91,49 @@ Hamza Shahab,`,
     });
   }
 
-  var newAppt = {
-    firstName: firstName,
-    lastName: lastName,
-    email: email,
-    address: address,
-    phone: phone,
-    reason: reason,
-    schedule_at: schedule_at,
-  };
+  await sql.query(
+    "SELECT * FROM appointment WHERE schedule_at = ?",
+    [schedule_at],
+    function (error, results, fields) {
+      console.log("results", results);
+      // if (error) {
+      //   console.log("error occured");
+      //   return 0;
+      // }
+      if (results.length > 0) {
+        //console.log("results", results);
+        console.log("time slot taken");
+        check = 0;
+      } else if (results.length === 0) {
+        //console.log("results", results);
+        console.log("time slot available");
+        check = 1;
+      }
+      console.log("check", check);
+      if (check === 0) res.status(400).json("Sorry, time slot not available!");
+      else {
+        var newAppt = {
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          address: address,
+          phone: phone,
+          reason: reason,
+          schedule_at: schedule_at,
+        };
 
-  Appt.createAppt(newAppt, function (err, appt) {
-    console.log("Appointment created");
-    if (err) res.send(err);
-    console.log("res", appt);
-    sendEmail(email).catch(console.error);
-    res.send({ appt: appt, status: "Email sent" });
-  });
+        Appt.createAppt(newAppt, function (err, appt) {
+          console.log("Appointment created");
+          if (err) res.send(err);
+          console.log("res", newAppt);
+          sendEmail(email).catch(console.error);
+          res.send({ appt: newAppt, status: "Email sent" });
+        });
+      }
+    }
+  );
+
+  //var hashedPassword = bcrypt.hashSync(password, saltRounds);
 };
 
 // exports.login = function (req, res) {
