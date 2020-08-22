@@ -1,3 +1,4 @@
+require("dotenv").config();
 var bcrypt = require("bcrypt");
 var validator = require("email-validator");
 var sql = require("../db");
