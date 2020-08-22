@@ -53,8 +53,8 @@ exports.contactus = function (req, res) {
     });
 
     var sender = {
-      from: "hamzashahab1610@gmail.com",
-      to: "hamzashahab1610@gmail.com",
+      from: "appointment.scheduler.bot@gmail.com",
+      to: "appointment.scheduler.bot@gmail.com",
       subject: `Reply contact us`,
       text: `Dear Mr. ${firstName} ${lastName},
 
@@ -66,7 +66,7 @@ Hamza Shahab,`,
     };
 
     var recepient = {
-      from: "hamzashahab1610@gmail.com",
+      from: "appointment.scheduler.bot@gmail.com",
       to: email,
       subject: `Reply contact us`,
       text: `Dear Mr. ${firstName} ${lastName},
