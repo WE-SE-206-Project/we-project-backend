@@ -26,25 +26,43 @@ exports.authenticateToken = (req, res, next) => {
   });
 };
 
-exports.changePassword = function (req, res) {
+exports.changePassword = function (req, res) {  
+  var saltRounds = 10;
   var email = req.body.email;
   var password = req.body.password;
+  var role = req.body.role  
+  var hashedPassword = bcrypt.hashSync(password, saltRounds);
 
-  sql.query(
-    "UPDATE user set password = ? WHERE email = ?",
-    [password, email],
-    function (err, result) {
-      if (err) {
-        console.log("error: ", err);
-        result(err, null);
-        res.send(err)
-      } else {
-        console.log("tasks : ", result);
-        result(null, result);
-        res.send(res);
+  if (role === "user") {
+    sql.query(
+      "UPDATE user set password = ? WHERE email = ?",
+      [hashedPassword, email],
+      function (err, result) {
+        if (err) {
+          console.log("error: ", err);
+          res.send(err);
+        } else {
+          console.log("tasks : ", result);
+          res.send(result);
+        }
       }
-    }
-  );
+    );
+  } else if (role === "org") {
+    sql.query(
+      "UPDATE org set password = ? WHERE email = ?",
+      [password, email],
+      function (err, result) {
+        if (err) {
+          console.log("error: ", err);
+          res.send(err);
+        } else {
+          console.log("tasks : ", result);
+          res.send(result);
+        }
+      }
+    );
+  }
+  
 }
 
 exports.contactus = function (req, res) {
@@ -128,7 +146,6 @@ exports.list_all_users = function (req, res) {
 };
 
 exports.update_user = function (req, res) {
-  var saltRounds = 10;
   var firstName = req.body.firstName;
   var lastName = req.body.lastName;
   var email = req.body.email;

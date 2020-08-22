@@ -8,7 +8,7 @@ var user = require("../controllers/userController")
 // });
 
 router.post("/getAppointment", user.authenticateToken,appt.getAppointment)
-router.post("/changePassword", user.changePassword);
+router.post("/changePassword", user.authenticateToken,user.changePassword);
 router.get("/", user.authenticateToken,appt.list_all_appt);
 router.post("/create", user.authenticateToken, appt.create_appt);
 //router.post("/login", appt.login);
