@@ -14,7 +14,7 @@ function generateAccessToken(user) {
   );
 }
 
-exports.authenticateToken = (req, res) => {
+exports.authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
   
@@ -25,7 +25,7 @@ exports.authenticateToken = (req, res) => {
   jwt.verify(token, "06cba9adaf0fe4c209cbc699016d2bc8d3876e29fc621ae58087640ba3e4271148b7a80c1ed725d4fba7d7bc056f476302af43253f037f53ff0a8eccdc1ab617", (err, user) => {
     if (err) return res.sendStatus(403);
     req.user = user;
-    //next();
+    next();
   });
 };
 
