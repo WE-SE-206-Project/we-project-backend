@@ -165,7 +165,7 @@ exports.login = function (req, res) {
   var email = req.body.email;
   var password = req.body.password;
 
-  //   const user = { name: name };
+  const mail = { email: email };
 
   sql.query("SELECT * FROM user WHERE email = ?", [email], function (
     error,
@@ -186,7 +186,7 @@ exports.login = function (req, res) {
           bcrypt.compareSync(password, results[0].password) &&
           results[0].email.length >= 0
         ) {
-          const accessToken = generateAccessToken(user);
+          const accessToken = generateAccessToken(mail);
           console.log("The solution is: ", results);
           res.status(200).send({
             code: 200,
