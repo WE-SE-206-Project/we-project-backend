@@ -34,7 +34,7 @@ exports.create_org = function (req, res) {
       res.send({ status: false });
       //res.send(err);
     }
-    console.log("res", user);
+    console.log("res", org);
     res.send({ status: true });
     //res.send(user);
   });
