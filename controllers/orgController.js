@@ -7,9 +7,13 @@ var jwt = require("jsonwebtoken");
 var Org = require("../models/orgModel");
 
 function generateAccessToken(user) {
-  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "1800s",
-  });
+  return jwt.sign(
+    user,
+    "06cba9adaf0fe4c209cbc699016d2bc8d3876e29fc621ae58087640ba3e4271148b7a80c1ed725d4fba7d7bc056f476302af43253f037f53ff0a8eccdc1ab617",
+    {
+      expiresIn: "1800s",
+    }
+  );
 }
 
 exports.list_all_orgs = function (req, res) {
