@@ -130,11 +130,11 @@ exports.create_user = function (req, res) {
   User.createUser(newUser, function (err, user) {
     console.log("user created");
     if (err) {
-      res.status(400).send({ status: false });
+      res.send({ status: false });
       //res.send(err);
     }
     console.log("res", user);
-    res.status(200).send({ status: true });
+    res.send({ status: true });
     //res.send(user);
   });
 };

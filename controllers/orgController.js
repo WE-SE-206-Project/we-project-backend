@@ -31,11 +31,11 @@ exports.create_org = function (req, res) {
   Org.createOrg(newOrg, function (err, org) {
      console.log("user created");
     if (err) {
-      res.status(400).send({ status: false });
+      res.send({ status: false });
       //res.send(err);
     }
     console.log("res", user);
-    res.status(200).send({ status: true });
+    res.send({ status: true });
     //res.send(user);
   });
 };
