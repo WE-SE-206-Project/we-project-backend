@@ -1,8 +1,15 @@
 var bcrypt = require("bcrypt");
 var validator = require("email-validator");
 var sql = require("../db");
+var jwt = require("jsonwebtoken");
 
 var Org = require("../models/orgModel");
+
+function generateAccessToken(user) {
+  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: "1800s",
+  });
+}
 
 exports.list_all_orgs = function (req, res) {
   Org.getAllOrg(function (err, org) {
@@ -68,7 +75,8 @@ exports.login = function (req, res) {
   var email = req.body.email;
   var password = req.body.password;
 
-   const mail = { email: email };
+  const mail = { email: email };
+  const accessToken = generateAccessToken(mail);
 
   sql.query("SELECT * FROM organization WHERE email = ?", [email], function (
     error,
@@ -88,12 +96,12 @@ exports.login = function (req, res) {
           results[0].name.length >= 0
         ) {
           console.log("The solution is: ", results);          
-          //const accessToken = generateAccessToken(mail);
+          
           res.status(200).send({
             code: 200,
             success: "login successful",
             results: results,
-            //accessToken: accessToken,
+            accessToken: accessToken,
           });
           //next();
         } else {
