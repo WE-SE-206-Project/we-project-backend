@@ -109,7 +109,7 @@ exports.contactus = function (req, res) {
       from: "appointment.scheduler.bot@gmail.com",
       to: email,
       subject: `Reply contact us`,
-      text: `${firstName} ${lastName},
+      text: `Dear ${firstName} ${lastName},
 
 Thank you for contacting us. We will contact you shorlty.`,
     };
