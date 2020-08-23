@@ -64,6 +64,7 @@ exports.create_appt = async function (req, res) {
   var schedule_at = req.body.schedule_at;
   console.log("schedule at", schedule_at);
   let check;
+  let apptRes;
 
   async function sendEmail(email) {
     let transporter = nodemailer.createTransport({
@@ -159,12 +160,29 @@ Hamza Shahab,`,
           schedule_at: schedule_at,
         };
 
-        Appt.createAppt(newAppt, function (err, appt) {
-          console.log("Appointment created");
-          if (err) res.send(err);
-          console.log("res", newAppt);
-          sendEmail(email).catch(console.error);
-          res.send({ appt: newAppt, status: "Email sent" });
+       
+
+        Appt.createAppt(newAppt, function (err, appt) {    
+          sql.query(
+            "Select * from appointment where schedule_at=?",
+            [schedule_at],
+            function (err, result) {
+              if (err) {
+                console.log("error: ", err);
+                res.send(err);
+              } else {
+                console.log("appointment : ", res);
+                sendEmail(email).catch(console.error);
+                //apptRes = res;
+                res.send(result)
+              }
+            }
+          );
+          // console.log("Appointment created");
+          // if (err) res.send(err);
+          // console.log("res", newAppt);
+          
+          // res.send({ appt: apptRes, status: "Email sent" });
         });
       }
     }

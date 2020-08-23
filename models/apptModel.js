@@ -25,7 +25,6 @@ Appt.createAppt = function (newAppt, result) {
       result(err, null);
     } else {
       console.log("tasks : ", res);
-
       result(null, res);
     }
   });
