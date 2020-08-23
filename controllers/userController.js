@@ -98,13 +98,11 @@ exports.contactus = function (req, res) {
       from: "appointment.scheduler.bot@gmail.com",
       to: "appointment.scheduler.bot@gmail.com",
       subject: `Reply contact us`,
-      text: `Dear Mr. ${firstName} ${lastName},
-
-Thank you for contacting us.
-
-Regards,
-
-Hamza Shahab,`,
+      text: `
+      First Name: ${firstName},
+      Last Name: ${lastName},
+      Email: ${email}
+      Message: ${message}`,
     };
 
     var recepient = {
@@ -113,11 +111,7 @@ Hamza Shahab,`,
       subject: `Reply contact us`,
       text: `Dear Mr. ${firstName} ${lastName},
 
-Thank you for contacting us.
-
-Regards,
-
-Hamza Shahab,`,
+Thank you for contacting us. We will contact you shorlty.`,
     };
 
     transporter.sendMail(sender, function (error, info) {

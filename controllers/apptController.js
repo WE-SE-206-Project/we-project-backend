@@ -86,39 +86,33 @@ exports.create_appt = async function (req, res) {
       }
     });
 
-    var sender = {
-      from: "appointment.scheduler.bot@gmail.com",
-      to: "appointment.scheduler.bot@gmail.com",
-      subject: `Reply contact us`,
-      text: `Dear Mr. ${firstName} ${lastName},
+//     var sender = {
+//       from: "appointment.scheduler.bot@gmail.com",
+//       to: "appointment.scheduler.bot@gmail.com",
+//       subject: `Appointment confirmation`,
+//       text: `Dear Mr. ${firstName} ${lastName},
 
-Thank you for contacting us.
-
-Regards,
-
-Hamza Shahab,`,
-    };
+// Your appointment has been scheduled at ${schedule_at}
+// `,
+//     };
 
     var recepient = {
       from: "appointment.scheduler.bot@gmail.com",
       to: email,
-      subject: `Reply contact us`,
+      subject: `Appointment confirmation`,
       text: `Dear Mr. ${firstName} ${lastName},
 
-Thank you for contacting us.
-
-Regards,
-
-Hamza Shahab,`,
+Your appointment has been scheduled at ${schedule_at}
+`,
     };
 
-    transporter.sendMail(sender, function (error, info) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Email sent to sender: " + info.response);
-      }
-    });
+    // transporter.sendMail(sender, function (error, info) {
+    //   if (error) {
+    //     console.log(error);
+    //   } else {
+    //     console.log("Email sent to sender: " + info.response);
+    //   }
+    // });
     transporter.sendMail(recepient, function (error, info) {
       if (error) {
         console.log(error);
