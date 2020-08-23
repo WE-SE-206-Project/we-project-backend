@@ -147,7 +147,7 @@ Hamza Shahab,`,
         check = 1;
       }
       console.log("check", check);
-      if (check === 0) res.status(400).json("Sorry, time slot not available!");
+      if (check === 0) res.status(200).json("Sorry, time slot not available!");
       else {
         var newAppt = {
           firstName: firstName,
