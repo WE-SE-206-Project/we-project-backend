@@ -111,7 +111,7 @@ exports.contactus = function (req, res) {
       subject: `Reply contact us`,
       text: `Dear ${firstName} ${lastName},
 
-Thank you for contacting us. We will contact you shorlty.`,
+Thank you for contacting us. We will contact you shortly.`,
     };
 
     transporter.sendMail(sender, function (error, info) {
