@@ -1,6 +1,5 @@
 require("dotenv").config();
 var bcrypt = require("bcrypt");
-var validator = require("email-validator");
 var sql = require("../db");
 var jwt = require("jsonwebtoken");
 
@@ -53,11 +52,9 @@ exports.create_org = function (req, res) {
      console.log("user created");
     if (err) {
       res.send({ status: false });
-      //res.send(err);
     }
     console.log("res", org);
     res.send({ status: true });
-    //res.send(user);
   });
 };
 
@@ -81,7 +78,6 @@ exports.update_org = function (req, res) {
 };
 
 exports.login = function (req, res) {
-  //   var name = req.body.name;
   var email = req.body.email;
   var password = req.body.password;
 
@@ -113,7 +109,6 @@ exports.login = function (req, res) {
             results: results,
             accessToken: accessToken,
           });
-          //next();
         } else {
           res.status(204).send({
             code: 204,

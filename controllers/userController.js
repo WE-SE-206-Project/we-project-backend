@@ -1,6 +1,5 @@
 require("dotenv").config();
 var bcrypt = require("bcrypt");
-var validator = require("email-validator");
 var sql = require("../db");
 var jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
@@ -17,23 +16,27 @@ function generateAccessToken(user) {
 exports.authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
-  
-  console.log("token",token);
-  
+
+  console.log("token", token);
+
   if (token == null) return res.sendStatus(401);
 
-  jwt.verify(token, "06cba9adaf0fe4c209cbc699016d2bc8d3876e29fc621ae58087640ba3e4271148b7a80c1ed725d4fba7d7bc056f476302af43253f037f53ff0a8eccdc1ab617", (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user;
-    next();
-  });
+  jwt.verify(
+    token,
+    "06cba9adaf0fe4c209cbc699016d2bc8d3876e29fc621ae58087640ba3e4271148b7a80c1ed725d4fba7d7bc056f476302af43253f037f53ff0a8eccdc1ab617",
+    (err, user) => {
+      if (err) return res.sendStatus(403);
+      req.user = user;
+      next();
+    }
+  );
 };
 
-exports.changePassword = function (req, res) {  
+exports.changePassword = function (req, res) {
   var saltRounds = 10;
   var email = req.body.email;
   var password = req.body.password;
-  var role = req.body.role  
+  var role = req.body.role;
   var hashedPassword = bcrypt.hashSync(password, saltRounds);
 
   if (role === "user") {
@@ -65,8 +68,7 @@ exports.changePassword = function (req, res) {
       }
     );
   }
-  
-}
+};
 
 exports.contactus = function (req, res) {
   var firstName = req.body.firstName;
@@ -77,8 +79,6 @@ exports.contactus = function (req, res) {
   async function sendEmail(email) {
     let transporter = nodemailer.createTransport({
       service: "gmail",
-      // port: 587,
-      // secure: false, // true for 465, false for other ports
       auth: {
         user: "appointment.scheduler.bot@gmail.com", // generated ethereal user
         pass: "hfdgbkrmdrlcarfl", // generated ethereal password
@@ -109,7 +109,7 @@ exports.contactus = function (req, res) {
       from: "appointment.scheduler.bot@gmail.com",
       to: email,
       subject: `Reply contact us`,
-      text: `Dear Mr. ${firstName} ${lastName},
+      text: `${firstName} ${lastName},
 
 Thank you for contacting us. We will contact you shorlty.`,
     };
@@ -159,7 +159,7 @@ exports.update_user = function (req, res) {
     console.log("user updated");
     if (err) res.send(err);
     console.log("res", user);
-    res.send({user:newUser,result:user});
+    res.send({ user: newUser, result: user });
   });
 };
 
@@ -184,16 +184,13 @@ exports.create_user = function (req, res) {
     console.log("user created");
     if (err) {
       res.send({ status: false });
-      //res.send(err);
     }
     console.log("res", user);
     res.send({ status: true });
-    //res.send(user);
   });
 };
 
 exports.login = function (req, res) {
-  //   var name = req.body.name;
   var email = req.body.email;
   var password = req.body.password;
 
@@ -226,7 +223,6 @@ exports.login = function (req, res) {
             results: results,
             accessToken: accessToken,
           });
-          //next();
         } else {
           res.status(204).send({
             code: 204,

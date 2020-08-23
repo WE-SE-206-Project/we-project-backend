@@ -1,11 +1,7 @@
 var bcrypt = require("bcrypt");
-var validator = require("email-validator");
 var sql = require("../db");
 const nodemailer = require("nodemailer");
-var express = require("express");
 var Appt = require("../models/apptModel");
-var router = express.Router();
-var validatetime = require("./prac");
 const { json } = require("body-parser");
 
 exports.list_all_appt = function (req, res) {
@@ -19,8 +15,8 @@ exports.list_all_appt = function (req, res) {
 
 exports.getAppointment = function (req, res) {
   var email = req.body.email;
-  var role = req.body.role
-  var orgId = req.body.orgId
+  var role = req.body.role;
+  var orgId = req.body.orgId;
 
   if (role === "user") {
     sql.query("SELECT * FROM appointment WHERE email = ?", [email], function (
@@ -49,11 +45,9 @@ exports.getAppointment = function (req, res) {
       }
     });
   }
-  
 };
 
 exports.create_appt = async function (req, res) {
-  //var saltRounds = 10;
   var firstName = req.body.firstName;
   var lastName = req.body.lastName;
   let email = req.body.email;
@@ -69,8 +63,6 @@ exports.create_appt = async function (req, res) {
   async function sendEmail(email) {
     let transporter = nodemailer.createTransport({
       service: "gmail",
-      // port: 587,
-      // secure: false, // true for 465, false for other ports
       auth: {
         user: "appointment.scheduler.bot@gmail.com", // generated ethereal user
         pass: "hfdgbkrmdrlcarfl", // generated ethereal password
@@ -86,33 +78,16 @@ exports.create_appt = async function (req, res) {
       }
     });
 
-//     var sender = {
-//       from: "appointment.scheduler.bot@gmail.com",
-//       to: "appointment.scheduler.bot@gmail.com",
-//       subject: `Appointment confirmation`,
-//       text: `Dear Mr. ${firstName} ${lastName},
-
-// Your appointment has been scheduled at ${schedule_at}
-// `,
-//     };
-
     var recepient = {
       from: "appointment.scheduler.bot@gmail.com",
       to: email,
       subject: `Appointment confirmation`,
-      text: `Dear Mr. ${firstName} ${lastName},
+      text: `Dear ${firstName} ${lastName},
 
 Your appointment has been scheduled at ${schedule_at}
 `,
     };
 
-    // transporter.sendMail(sender, function (error, info) {
-    //   if (error) {
-    //     console.log(error);
-    //   } else {
-    //     console.log("Email sent to sender: " + info.response);
-    //   }
-    // });
     transporter.sendMail(recepient, function (error, info) {
       if (error) {
         console.log(error);
@@ -127,16 +102,10 @@ Your appointment has been scheduled at ${schedule_at}
     [schedule_at],
     function (error, results, fields) {
       console.log("results", results);
-      // if (error) {
-      //   console.log("error occured");
-      //   return 0;
-      // }
       if (results.length > 0) {
-        //console.log("results", results);
         console.log("time slot taken");
         check = 0;
       } else if (results.length === 0) {
-        //console.log("results", results);
         console.log("time slot available");
         check = 1;
       }
@@ -154,9 +123,7 @@ Your appointment has been scheduled at ${schedule_at}
           schedule_at: schedule_at,
         };
 
-       
-
-        Appt.createAppt(newAppt, function (err, appt) {    
+        Appt.createAppt(newAppt, function (err, appt) {
           sql.query(
             "Select * from appointment where schedule_at=?",
             [schedule_at],
@@ -167,66 +134,12 @@ Your appointment has been scheduled at ${schedule_at}
               } else {
                 console.log("appointment : ", res);
                 sendEmail(email).catch(console.error);
-                //apptRes = res;
-                res.send(result)
+                res.send(result);
               }
             }
           );
-          // console.log("Appointment created");
-          // if (err) res.send(err);
-          // console.log("res", newAppt);
-          
-          // res.send({ appt: apptRes, status: "Email sent" });
         });
       }
     }
   );
-
-  //var hashedPassword = bcrypt.hashSync(password, saltRounds);
 };
-
-// exports.login = function (req, res) {
-//   //   var username = req.body.username;
-//   var email = req.body.email;
-//   var password = req.body.password;
-
-//   //   const user = { name: username };
-
-//   sql.query("SELECT * FROM email WHERE email = ?", [email], function (
-//     error,
-//     results,
-//     fields
-//   ) {
-//     if (error) {
-//       console.log("error ocurred", error);
-//       res.status(400).send({
-//         code: 400,
-//         failed: "error ocurred",
-//       });
-//     } else {
-//       if (results.length > 0) {
-//         if (
-//           bcrypt.compareSync(password, results[0].password) &&
-//           results[0].username.length >= 0
-//         ) {
-//           console.log("The solution is: ", results);
-//           res.status(200).send({
-//             code: 200,
-//             success: "login successful",
-//           });
-//           //next();
-//         } else {
-//           res.status(204).send({
-//             code: 204,
-//             success: "Email and password does not match",
-//           });
-//         }
-//       } else {
-//         res.status(204).send({
-//           code: 204,
-//           success: "Email does not exist",
-//         });
-//       }
-//     }
-//   });
-// };
