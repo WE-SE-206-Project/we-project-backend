@@ -27,7 +27,7 @@ exports.getAppointment = function (req, res) {
       if (error) {
         res.send(error);
       } else {
-        console.log("results", results);
+        console.log("response", results);
         res.send(results);
       }
     });
